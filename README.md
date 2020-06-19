@@ -159,13 +159,8 @@ werden vom Konfigurator beim Anlegen der Instanz gesetzt.
 
 Es werden folgende Variablenprofile angelegt:
 * Boolean<br>
-NetatmoAircare.Presence
 
 * Integer<br>
-NetatmoAircare.CameraStatus, NetatmoAircare.CameraAction, <br>
-NetatmoAircare.LightModeStatus, NetatmoAircare.LightAction, NetatmoAircare.LightIntensity, <br>
-NetatmoAircare.SDCardStatus, <br>
-NetatmoAircare.PowerStatus
 
 ## 6. Anhang
 
@@ -181,5 +176,5 @@ GUIDs
 
 ## 7. Versions-Historie
 
-- 1.0 @ dd.mm.yyyy HH:MM
+- 1.0 @ 19.06.2020 11:34
   - Initiale Version

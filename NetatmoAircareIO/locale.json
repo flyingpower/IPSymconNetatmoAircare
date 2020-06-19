@@ -33,8 +33,14 @@
 			"Client ID": "Client ID",
 			"Client Secret": "Client Secret",
 
+			"Call settings": "Abrufeinstellungen",
+
 			"Update data every X minutes": "Aktualisiere Daten alle X Minuten",
 			"Minutes": "Minuten",
+
+			"Login at Netatmo": "Bei Netatmo anmelden",
+			"Clear Token": "Token löschen",
+			"Update data": "Aktualisiere Daten",
 
 			"Instance getting created": "Instanz wird erstellt",
 			"Instance is active": "Instanz ist aktiv",

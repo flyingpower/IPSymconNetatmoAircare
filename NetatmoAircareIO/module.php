@@ -3,12 +3,10 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../libs/common.php';  // globale Funktionen
-require_once __DIR__ . '/../libs/library.php'; // modul-bezogene Funktionen
 
 class NetatmoAircareIO extends IPSModule
 {
     use NetatmoAircareCommon;
-    use NetatmoAircareLibrary;
 
     private $oauthIdentifer = 'netatmo';
 
@@ -650,6 +648,7 @@ class NetatmoAircareIO extends IPSModule
                 if ($empty) {
                     $err = 'data contains no sensor';
                     $statuscode = self::$IS_NOPRODUCT;
+					$this->SetTimerInterval('UpdateData', 0);
                 }
             }
         } elseif ($statuscode == self::$IS_FORBIDDEN) {
