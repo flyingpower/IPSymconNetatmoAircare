@@ -6,7 +6,7 @@
 	"aliases": ["NetatmoAircare Konfigurator"],
 	"parentRequirements": ["{076043C4-997E-6AB3-9978-DA212D50A9F5}"],
 	"childRequirements": [],
-	"implemented": ["{53264646-2842-AA77-59F7-3722D44C2100}"],
+	"implemented": [],
 	"prefix": "NetatmoAircare",
 	"url": "https://github.com/demel42/IPSymconNetatmoAircare/blob/master/README.md"
 }

@@ -54,7 +54,7 @@ class NetatmoAircareConfig extends IPSModule
         return $tree_position;
     }
 
-    private function buildEntry($guid, $product_type, $product_id, $product_name, $home_id, $home_name, $product_category)
+    private function buildEntry($guid, $product_type, $product_id, $product_name, $product_category)
     {
         $instID = 0;
         $instIDs = IPS_GetInstanceListByModuleID($guid);
@@ -70,14 +70,14 @@ class NetatmoAircareConfig extends IPSModule
             'moduleID'       => $guid,
             'location'       => $this->SetLocation(),
             'configuration'  => [
+                'product_type' => $product_type,
                 'product_id'   => $product_id,
             ]
         ];
-        $create['info'] = $home_name . '\\' . $product_name;
+        $create['info'] = $product_name;
 
         $entry = [
             'category'   => $this->Translate($product_category),
-            'home'       => $home_name,
             'name'       => $product_name,
             'product_id' => $product_id,
             'instanceID' => $instID,
@@ -101,11 +101,28 @@ class NetatmoAircareConfig extends IPSModule
                 $devices = $jdata['body']['devices'];
                 foreach ($devices as $device) {
                     $this->SendDebug(__FUNCTION__, 'device=' . print_r($device, true), 0);
-                    if (!isset($device['id'])) {
+                    if (!isset($device['_id'])) {
                         continue;
                     }
-                    $device = $device['id'];
-                    $name = $this->GetArrayElem($device, 'name', 'ID:' . $id);
+                    $product_id = $device['_id'];
+                    $product_name = $device['station_name'];
+                    $product_type = $device['type'];
+                    switch ($product_type) {
+                        case 'NHC':
+                            $guid = '{F3940032-CC4B-9E69-383A-6FFAD13C5438}';
+                            $product_category = 'Room air sensor';
+                            break;
+                        default:
+                            $guid = '';
+                            break;
+                    }
+                    if ($guid == '') {
+                        $this->SendDebug(__FUNCTION__, 'ignore camera ' . $camera['id'] . ': unsupported type ' . $camera['type']);
+                        continue;
+                    }
+
+                    $entry = $this->buildEntry($guid, $product_type, $product_id, $product_name, $product_category);
+                    $entries[] = $entry;
                 }
             }
         }
@@ -124,6 +141,11 @@ class NetatmoAircareConfig extends IPSModule
                 'direction' => 'ascending'
             ],
             'columns' => [
+                [
+                    'caption' => 'Category',
+                    'name'    => 'category',
+                    'width'   => '200px',
+                ],
                 [
                     'caption' => 'Name',
                     'name'    => 'name',

@@ -10,6 +10,8 @@
 			"Name": "Name",
 			"Id": "Id",
 
+			"Room air sensor": "Raumluftsensor",
+
 			"category for products to be created:": "Kategorie für anzulegende Produkte:",
 			"category": "Kategorie",
 

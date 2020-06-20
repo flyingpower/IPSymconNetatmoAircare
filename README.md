@@ -169,10 +169,10 @@ GUIDs
 - Instanzen:
   - NetatmoAircareIO: `{070C93FD-9D19-D670-2C73-20104B87F034}`
   - NetatmoAircareConfig: `{F031A9F9-D196-4852-D287-E46A93256F22}`
-  - NetatmoAircareSensor: `{2C9D97B9-D683-51EB-1731-EA98AA7D1130}`
+  - NetatmoAircareSensor: `{F3940032-CC4B-9E69-383A-6FFAD13C5438}`
 - Nachrichten:
   - `{076043C4-997E-6AB3-9978-DA212D50A9F5}`: an NetatmoAircareIO
-  - `{53264646-2842-AA77-59F7-3722D44C2100}`: an NetatmoAircareConfig, NetatmoAircareSensor
+  - `{53264646-2842-AA77-59F7-3722D44C2100}`: an NetatmoAircareSensor
 
 ## 7. Versions-Historie
 
