@@ -1,0 +1,70 @@
+{
+	"translations": {
+		"de": {
+			"Instance is disabled": "Instanz ist deaktiviert",
+
+			"Netatmo Aircare": "Netamo Luftüberwachung",
+			"Netatmo Room air sensor": "Netatmo Raumluftsensor",
+
+			"Basic configuration (don't change)": "Basis-Konfiguration (nicht ändern)",
+
+			"Product-Type": "Produkt-Typ",
+			"Product-ID": "Produkt-ID",
+
+			"optional data": "optionale Zusatzdaten",
+			"last transmission to Netatmo": "letzte Übertragung an Netatmo",
+			"Measurement-Timestamp": "Messzeitpunkt",
+			"Strength of wifi-signal": "Stärke des Wifi-Signals",
+
+			"optional weather data": "optionale Wetterdaten",
+			"absolute Humidity": "absolute Luftfeuchte",
+			"Dewpoint": "Taupunkt",
+			"Heatindex": "Hitzeindex",
+			"Min/Max of temperature": "Temperatur-Minimun/Maximum",
+
+			"Air Quality Health Index": "Luftqualität",
+
+			"absolute humidity": "absolute Luftfeuchtigkeit",
+			"CO2": "CO2",
+			"Dewpoint": "Taupunkt",
+			"Heatindex": "Hitzeindex",
+			"Humidity": "Luftfeuchtigkeit",
+			"last measurement": "letzte Messung",
+			"last transmission": "letzte Übertragung",
+			"Noise": "Lärm",
+			"Temperature": "Temperatur",
+			"Time of today's temperature-maximum": "Zeitpunkt des heutigen Temperatur-Maximums",
+			"Time of today's temperature-minimum": "Zeitpunkt des heutigen Temperatur-Minimums",
+			"Today's temperature-maximum": "heutiges Temperatur-Maximum",
+			"Today's temperature-minimum": "heutiges Temperatur-Minimum",
+
+			"bad": "schwach",
+			"average": "mittel",
+			"good": "gut",
+
+			"Healthy": "Gesund",
+			"Fine": "Gut",
+			"Fair": "in Ordnung",
+			"Poor": "Schlecht",
+			"Unhealthy": "Ungesund",
+
+			"Instance getting created": "Instanz wird erstellt",
+			"Instance is active": "Instanz ist aktiv",
+			"Instance is deleted": "Instanz wird gelöscht",
+			"Instance is inactive": "Instanz ist inaktiv",
+			"Instance is not created": "Instanz wurde nicht erzeugt",
+
+			"Instance is inactive (no data)": "Instanz ist inaktiv (keine Daten)",
+			"Instance is inactive (unauthorized)": "Instanz ist inaktiv (Authorisierung fehlerhaft)",
+			"Instance is inactive (forbidden)": "Instanz ist inaktiv (fehlende Berechtigung)",
+			"Instance is inactive (server error)": "Instanz ist inaktiv (Serverfehler)",
+			"Instance is inactive (http error)": "Instanz ist inaktiv (HTTP-Fehler)",
+			"Instance is inactive (invalid data)": "Instanz ist inaktiv (ungültige Daten)",
+			"Instance is inactive (no product)": "Instanz ist inaktiv (kein Produkt)",
+			"Instance is inactive (product missing)": "Instanz ist inaktiv (Produkt ist unbekannt)",
+			"Instance is inactive (invalid config)": "Instanz ist inaktiv (ungültige Konfiguration)",
+			"Instance is inactive (no Symcon-Connect)": "Instanz ist inaktiv (kein Symcon-Connect)",
+			"Instance is inactive (not logged in)": "Instanz ist inaktiv (nicht angemeldet)"
+		}
+	}
+}
