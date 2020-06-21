@@ -17,14 +17,20 @@
 			"Strength of wifi-signal": "Stärke des Wifi-Signals",
 
 			"optional weather data": "optionale Wetterdaten",
-			"absolute Humidity": "absolute Luftfeuchte",
+			"absolute pressure": "absoluter Luftdruck",
+			"absolute humidity": "absolute Luftfeuchte",
 			"Dewpoint": "Taupunkt",
 			"Heatindex": "Hitzeindex",
 			"Min/Max of temperature": "Temperatur-Minimun/Maximum",
 
-			"Air Quality Health Index": "Luftqualität",
+			"Processing information": "Angaben zur Verarbeitung",
+			"Duration until the connection to netatmo or between stations is marked disturbed":
+				"Dauer bis die Verbindung zu Netatmo oder zwischen den Stationen als gestört gilt",
+			"Minutes": "Minuten",
 
 			"absolute humidity": "absolute Luftfeuchtigkeit",
+			"Air pressure": "Luftdruck",
+			"Air Quality Health Index": "Luftqualität",
 			"CO2": "CO2",
 			"Dewpoint": "Taupunkt",
 			"Heatindex": "Hitzeindex",
@@ -32,6 +38,7 @@
 			"last measurement": "letzte Messung",
 			"last transmission": "letzte Übertragung",
 			"Noise": "Lärm",
+			"State": "Status",
 			"Temperature": "Temperatur",
 			"Time of today's temperature-maximum": "Zeitpunkt des heutigen Temperatur-Maximums",
 			"Time of today's temperature-minimum": "Zeitpunkt des heutigen Temperatur-Minimums",

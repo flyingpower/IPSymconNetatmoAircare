@@ -617,7 +617,6 @@ class NetatmoAircareIO extends IPSModule
         }
 
         // Anfrage mit Token
-        /*
         $url = 'https://api.netatmo.net/api/gethomecoachsdata';
         $url .= '?access_token=' . $access_token;
 
@@ -657,9 +656,7 @@ class NetatmoAircareIO extends IPSModule
             $this->SetMultiBuffer('LastData', '');
             return;
         }
-         */
 
-        $data = '{"body":{"devices":[{"_id":"70:ee:50:56:50:a4","station_name":"Wohnzimmer Luft","date_setup":1577265435,"last_setup":1577265435,"type":"NHC","last_status_store":1592651827,"module_name":"Innenraum","firmware":48,"wifi_status":62,"reachable":true,"co2_calibrating":false,"data_type":["Temperature","CO2","Humidity","Noise","Pressure","health_idx"],"place":{"altitude":168,"city":"Kassel","country":"DE","timezone":"Europe\/Berlin","location":[9.491299629211426,51.33549880981445]},"dashboard_data":{"time_utc":1592651826,"Temperature":22.2,"CO2":463,"Humidity":61,"Noise":66,"Pressure":1020.5,"AbsolutePressure":991.8,"health_idx":0,"min_temp":21.6,"max_temp":22.2,"date_max_temp":1592604235,"date_min_temp":1592631729}}],"user":{"mail":"sw@gmx.de","administrative":{"lang":"de-DE","reg_locale":"de-DE","unit":0,"windunit":0,"pressureunit":0,"feel_like_algo":0}}},"status":"ok","time_exec":0.488278865814209,"time_server":1592652352}';
         $this->SendDebug(__FUNCTION__, 'data=' . print_r($data, true), 0);
         $sdata = [
             'DataID' => '{53264646-2842-AA77-59F7-3722D44C2100}',
