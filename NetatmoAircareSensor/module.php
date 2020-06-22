@@ -94,18 +94,18 @@ class NetatmoAircareSensor extends IPSModule
         $this->MaintainVariable('WifiStrength', $this->Translate('Strength of wifi-signal'), VARIABLETYPE_INTEGER, 'NetatmoAircare.WifiStrength', $vpos++, $with_wifi_strength);
 
         $this->MaintainVariable('Temperature', $this->Translate('Temperature'), VARIABLETYPE_FLOAT, 'NetatmoAircare.Temperatur', $vpos++, true);
-        $this->MaintainVariable('TemperatureMax', $this->Translate('Today\'s temperature-maximum'), VARIABLETYPE_FLOAT, 'Netatmo.Temperatur', $vpos++, $with_minmax);
+        $this->MaintainVariable('TemperatureMax', $this->Translate('Today\'s temperature-maximum'), VARIABLETYPE_FLOAT, 'NetatmoAircare.Temperatur', $vpos++, $with_minmax);
         $this->MaintainVariable('TemperatureMaxTimestamp', $this->Translate('Time of today\'s temperature-maximum'), VARIABLETYPE_INTEGER, '~UnixTimestampTime', $vpos++, $with_minmax);
-        $this->MaintainVariable('TemperatureMin', $this->Translate('Today\'s temperature-minimum'), VARIABLETYPE_FLOAT, 'Netatmo.Temperatur', $vpos++, $with_minmax);
+        $this->MaintainVariable('TemperatureMin', $this->Translate('Today\'s temperature-minimum'), VARIABLETYPE_FLOAT, 'NetatmoAircare.Temperatur', $vpos++, $with_minmax);
         $this->MaintainVariable('TemperatureMinTimestamp', $this->Translate('Time of today\'s temperature-minimum'), VARIABLETYPE_INTEGER, '~UnixTimestampTime', $vpos++, $with_minmax);
         $this->MaintainVariable('Humidity', $this->Translate('Humidity'), VARIABLETYPE_FLOAT, 'NetatmoAircare.Humidity', $vpos++, true);
         $this->MaintainVariable('AbsoluteHumidity', $this->Translate('absolute humidity'), VARIABLETYPE_FLOAT, 'NetatmoAircare.absHumidity', $vpos++, $with_absolute_humidity);
-        $this->MaintainVariable('Dewpoint', $this->Translate('Dewpoint'), VARIABLETYPE_FLOAT, 'Netatmo.Dewpoint', $vpos++, $with_dewpoint);
-        $this->MaintainVariable('Heatindex', $this->Translate('Heatindex'), VARIABLETYPE_FLOAT, 'Netatmo.Heatindex', $vpos++, $with_heatindex);
+        $this->MaintainVariable('Dewpoint', $this->Translate('Dewpoint'), VARIABLETYPE_FLOAT, 'NetatmoAircare.Dewpoint', $vpos++, $with_dewpoint);
+        $this->MaintainVariable('Heatindex', $this->Translate('Heatindex'), VARIABLETYPE_FLOAT, 'NetatmoAircare.Heatindex', $vpos++, $with_heatindex);
         $this->MaintainVariable('CO2', $this->Translate('CO2'), VARIABLETYPE_INTEGER, 'NetatmoAircare.CO2', $vpos++, true);
         $this->MaintainVariable('Noise', $this->Translate('Noise'), VARIABLETYPE_INTEGER, 'NetatmoAircare.Noise', $vpos++, true);
-        $this->MaintainVariable('Pressure', $this->Translate('Air pressure'), VARIABLETYPE_FLOAT, 'Netatmo.Pressure', $vpos++, true);
-        $this->MaintainVariable('AbsolutePressure', $this->Translate('absolute pressure'), VARIABLETYPE_FLOAT, 'Netatmo.Pressure', $vpos++, $with_absolute_pressure);
+        $this->MaintainVariable('Pressure', $this->Translate('Air pressure'), VARIABLETYPE_FLOAT, 'NetatmoAircare.Pressure', $vpos++, true);
+        $this->MaintainVariable('AbsolutePressure', $this->Translate('absolute pressure'), VARIABLETYPE_FLOAT, 'NetatmoAircare.Pressure', $vpos++, $with_absolute_pressure);
         $this->MaintainVariable('Index', $this->Translate('Air Quality Health Index'), VARIABLETYPE_INTEGER, 'NetatmoAircare.Index', $vpos++, true);
 
         $product_id = $this->ReadPropertyString('product_id');
