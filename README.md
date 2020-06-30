@@ -21,10 +21,6 @@
 Anschluss der Geräte, die von Netatmo unter dem Beriff _Aircare_ zusammengefasst sind:
 - Raumluftsensor
 
-Je nach Produktyp umfasst das Modul folgende Funktionen:
-- Abruf des Status
-- Verwaltung der identifizierten Personen sowie Steuerung (_kommt_, _geht_)
-
 ## 2. Voraussetzungen
 
  - IP-Symcon ab Version 5.3
@@ -33,7 +29,7 @@ Je nach Produktyp umfasst das Modul folgende Funktionen:
  - IP-Symcon Connect<br>
    **oder**<br>
  - einen Account sowie eine "App" bei Netatmo Connect, um die Werte abrufen zu können (https://dev.netatmo.com)<br>
-   Achtung: diese App ist nur für den Zugriff auf Netatmo-Aircare-Produkte gedacht; das Modul benutzt die Scopes _read_presence access_presence read_camera write_camera access_camera read_smokedetector_.<br>
+   Achtung: diese App ist nur für den Zugriff auf Netatmo-Aircare-Produkte gedacht; das Modul benutzt den Scope _read_homecoach_.<br>
    Eine gleichzeitige Benutzung der gleichen Netatmo-App für andere Bereiche (z.B. Weather) stört sich gegenseitig.<br>
    Die Angabe des WebHook in der App-Definition ist nicht erforderlich, das führt das IO-Modul selbst durch.
 
@@ -150,17 +146,29 @@ werden vom Konfigurator beim Anlegen der Instanz gesetzt.
 
 | Eigenschaft              | Typ      | Standardwert | Beschreibung |
 | :----------------------- | :--------| :----------- | :----------- |
-| Produkt-ID               | string   |              | ID des Produktes |
+| product_type             | integer  |              | Typ des Produktes |
+| product_id               | string   |              | ID des Produktes |
 |                          |          |              | |
-| letzte Kommunikation     | boolean  | Nein         | letzte Kommunikation mit dem Netatmo-Server |
-| Stärke des Wifi-Signals  | boolean  | Nein         | Ausgabe des Signal in den Abstufungen: _schlecht_, _mittel_, _gut_, _hoch_|
+| with_last_contact        | boolean  | Nein         | letzte Kommunikation mit dem Netatmo-Server |
+| with_last_measure        | boolean  | Nein         | letzte Messung des Sensors |
+| with_wifi_strength       | boolean  | Nein         | Ausgabe des Signal in den Abstufungen: _schlecht_, _mittel_, _gut_|
+|                          |          |              | |
+| with_absolute_humidity   | boolean  | false        | absolute Luftfeuchtigkeit |
+| with_absolute_pressure   | boolean  | false        | absoluter Luftdruck |
+| with_dewpoint            | boolean  | false        | Taupunkt |
+| with_heatindex           | boolean  | false        | Hitzeindex |
+| with_minmax              | boolean  | false        | Ausgabe von Min/Max-Wert (Temperatur) |
+|                          |          |              | |
+| minutes2fail             | integer  | 30           | Dauer, bis die Kommunikation als gestört gilt |
 
 ### Variablenprofile
 
 Es werden folgende Variablenprofile angelegt:
-* Boolean<br>
-
 * Integer<br>
+NetatmoAircare.CO2, NetatmoAircare.Index, NetatmoAircare.Noise, NetatmoAircare.WifiStrength
+
+* Float<br>
+NetatmoAircare.absHumidity, NetatmoAircare.Dewpoint, NetatmoAircare.Heatindex, NetatmoAircare.Humidity, NetatmoAircare.Pressure, NetatmoAircare.Temperatur
 
 ## 6. Anhang
 
@@ -176,5 +184,5 @@ GUIDs
 
 ## 7. Versions-Historie
 
-- 1.0 @ 22.06.2020 14:05
+- 1.0 @ 30.06.2020 18:37
   - Initiale Version
