@@ -184,5 +184,8 @@ GUIDs
 
 ## 7. Versions-Historie
 
+- 1.1 @ 06.07.2020 15:12
+  - Einrichtung php-cs-fixer und github-workflows
+
 - 1.0 @ 30.06.2020 18:37
   - Initiale Version
