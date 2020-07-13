@@ -184,6 +184,9 @@ GUIDs
 
 ## 7. Versions-Historie
 
+- 1.2 @ 13.07.2020 14:56
+  - LICENSE.md hinzugefügt
+
 - 1.1 @ 06.07.2020 15:12
   - Einrichtung php-cs-fixer und github-workflows
 
