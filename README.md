@@ -188,6 +188,7 @@ GUIDs
   - LICENSE.md hinzugefügt
   - Nutzung von HasActiveParent(): Anzeige im Konfigurationsformular sowie entsprechende Absicherung von SendDataToParent()
   - lokale Funktionen aus common.php in locale.php verlagert
+  - Traits des Moduls haben nun Postfix "Lib"
 
 - 1.1 @ 06.07.2020 15:12
   - Einrichtung php-cs-fixer und github-workflows
