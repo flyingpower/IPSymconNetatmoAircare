@@ -7,8 +7,8 @@ require_once __DIR__ . '/../libs/local.php';   // lokale Funktionen
 
 class NetatmoAircareIO extends IPSModule
 {
-    use NetatmoAircareCommon;
-    use NetatmoAircareLocal;
+    use NetatmoAircareCommonLib;
+    use NetatmoAircareLocalLib;
 
     private $oauthIdentifer = 'netatmo';
 
