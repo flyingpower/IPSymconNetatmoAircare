@@ -134,7 +134,7 @@ class NetatmoAircareConfig extends IPSModule
         return $entries;
     }
 
-    protected function GetFormElements()
+    private function GetFormElements()
     {
         $formElements = [];
 
@@ -192,7 +192,7 @@ class NetatmoAircareConfig extends IPSModule
         return $formElements;
     }
 
-    protected function GetFormActions()
+    private function GetFormActions()
     {
         $formActions = [];
 

@@ -116,7 +116,7 @@ class NetatmoAircareSensor extends IPSModule
         $this->SetStatus(IS_ACTIVE);
     }
 
-    protected function GetFormElements()
+    private function GetFormElements()
     {
         $formElements = [];
 
@@ -237,7 +237,7 @@ class NetatmoAircareSensor extends IPSModule
         return $formElements;
     }
 
-    protected function GetFormActions()
+    private function GetFormActions()
     {
         $formActions = [];
 
