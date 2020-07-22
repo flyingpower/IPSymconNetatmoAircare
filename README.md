@@ -184,8 +184,9 @@ GUIDs
 
 ## 7. Versions-Historie
 
-- 1.2 @ 13.07.2020 14:56
+- 1.2 @ 22.07.2020 12:13 (beta)
   - LICENSE.md hinzugefügt
+  - Nutzung von HasActiveParent(): Anzeige im Konfigurationsformular sowie entsprechende Absicherung von SendDataToParent()
 
 - 1.1 @ 06.07.2020 15:12
   - Einrichtung php-cs-fixer und github-workflows

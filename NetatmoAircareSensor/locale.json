@@ -1,6 +1,8 @@
 {
 	"translations": {
 		"de": {
+			"Instance has no active parent instance": "Instanz hat keine aktive übergeordnete Instanz",
+
 			"Instance is disabled": "Instanz ist deaktiviert",
 
 			"Netatmo Aircare": "Netamo Luftüberwachung",

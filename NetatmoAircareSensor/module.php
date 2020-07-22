@@ -119,7 +119,19 @@ class NetatmoAircareSensor extends IPSModule
     protected function GetFormElements()
     {
         $formElements = [];
-        $formElements[] = ['type' => 'CheckBox', 'name' => 'module_disable', 'caption' => 'Instance is disabled'];
+
+        if ($this->HasActiveParent() == false) {
+            $formElements[] = [
+                'type'    => 'Label',
+                'caption' => 'Instance has no active parent instance',
+            ];
+        }
+
+        $formElements[] = [
+            'type'    => 'CheckBox',
+            'name'    => 'module_disable',
+            'caption' => 'Instance is disabled'
+        ];
 
         $product_type = $this->ReadPropertyString('product_type');
         switch ($product_type) {
@@ -131,31 +143,96 @@ class NetatmoAircareSensor extends IPSModule
                 break;
         }
 
-        $formElements[] = ['type' => 'Label', 'caption' => $product_type_s];
+        $formElements[] = [
+            'type'    => 'Label',
+            'caption' => $product_type_s];
 
         $items = [];
-        $items[] = ['type' => 'ValidationTextBox', 'name' => 'product_type', 'caption' => 'Product-Type'];
-        $items[] = ['type' => 'ValidationTextBox', 'name' => 'product_id', 'caption' => 'Product-ID'];
-        $formElements[] = ['type' => 'ExpansionPanel', 'items' => $items, 'caption' => 'Basic configuration (don\'t change)'];
+        $items[] = [
+            'type'    => 'ValidationTextBox',
+            'name'    => 'product_type',
+            'caption' => 'Product-Type'
+        ];
+        $items[] = [
+            'type'    => 'ValidationTextBox',
+            'name'    => 'product_id',
+            'caption' => 'Product-ID'
+        ];
+        $formElements[] = [
+            'type'    => 'ExpansionPanel',
+            'items'   => $items,
+            'caption' => 'Basic configuration (don\'t change)'
+        ];
 
         $items = [];
-        $items[] = ['type' => 'CheckBox', 'name' => 'with_last_contact', 'caption' => 'last transmission to Netatmo'];
-        $items[] = ['type' => 'CheckBox', 'name' => 'with_last_measure', 'caption' => 'Measurement-Timestamp'];
-        $items[] = ['type' => 'CheckBox', 'name' => 'with_wifi_strength', 'caption' => 'Strength of wifi-signal'];
-        $formElements[] = ['type' => 'ExpansionPanel', 'items' => $items, 'caption' => 'optional data'];
+        $items[] = [
+            'type'    => 'CheckBox',
+            'name'    => 'with_last_contact',
+            'caption' => 'last transmission to Netatmo'
+        ];
+        $items[] = [
+            'type'    => 'CheckBox',
+            'name'    => 'with_last_measure',
+            'caption' => 'Measurement-Timestamp'
+        ];
+        $items[] = [
+            'type'    => 'CheckBox',
+            'name'    => 'with_wifi_strength',
+            'caption' => 'Strength of wifi-signal'
+        ];
+        $formElements[] = [
+            'type'    => 'ExpansionPanel',
+            'items'   => $items,
+            'caption' => 'optional data'
+        ];
 
         $items = [];
-        $items[] = ['type' => 'CheckBox', 'name' => 'with_absolute_pressure', 'caption' => 'absolute pressure'];
-        $items[] = ['type' => 'CheckBox', 'name' => 'with_absolute_humidity', 'caption' => 'absolute humidity'];
-        $items[] = ['type' => 'CheckBox', 'name' => 'with_dewpoint', 'caption' => 'Dewpoint'];
-        $items[] = ['type' => 'CheckBox', 'name' => 'with_heatindex', 'caption' => 'Heatindex'];
-        $items[] = ['type' => 'CheckBox', 'name' => 'with_minmax', 'caption' => 'Min/Max of temperature'];
-        $formElements[] = ['type' => 'ExpansionPanel', 'items' => $items, 'caption' => 'optional weather data'];
+        $items[] = [
+            'type'    => 'CheckBox',
+            'name'    => 'with_absolute_pressure',
+            'caption' => 'absolute pressure'
+        ];
+        $items[] = [
+            'type'    => 'CheckBox',
+            'name'    => 'with_absolute_humidity',
+            'caption' => 'absolute humidity'
+        ];
+        $items[] = [
+            'type'    => 'CheckBox',
+            'name'    => 'with_dewpoint',
+            'caption' => 'Dewpoint'
+        ];
+        $items[] = [
+            'type'    => 'CheckBox',
+            'name'    => 'with_heatindex',
+            'caption' => 'Heatindex'
+        ];
+        $items[] = [
+            'type'    => 'CheckBox',
+            'name'    => 'with_minmax',
+            'caption' => 'Min/Max of temperature'
+        ];
+        $formElements[] = [
+            'type'    => 'ExpansionPanel',
+            'items'   => $items,
+            'caption' => 'optional weather data'
+        ];
 
         $items = [];
-        $items[] = ['type' => 'Label', 'caption' => 'Duration until the connection to netatmo or between stations is marked disturbed'];
-        $items[] = ['type' => 'NumberSpinner', 'name' => 'minutes2fail', 'caption' => 'Minutes'];
-        $formElements[] = ['type' => 'ExpansionPanel', 'items' => $items, 'caption' => 'Processing information'];
+        $items[] = [
+            'type'    => 'Label',
+            'caption' => 'Duration until the connection to netatmo or between stations is marked disturbed'
+        ];
+        $items[] = [
+            'type'    => 'NumberSpinner',
+            'name'    => 'minutes2fail',
+            'caption' => 'Minutes'
+        ];
+        $formElements[] = [
+            'type'    => 'ExpansionPanel',
+            'items'   => $items,
+            'caption' => 'Processing information'
+        ];
 
         return $formElements;
     }
