@@ -3,10 +3,12 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../libs/common.php';  // globale Funktionen
+require_once __DIR__ . '/../libs/local.php';   // lokale Funktionen
 
 class NetatmoAircareIO extends IPSModule
 {
     use NetatmoAircareCommon;
+    use NetatmoAircareLocal;
 
     private $oauthIdentifer = 'netatmo';
 

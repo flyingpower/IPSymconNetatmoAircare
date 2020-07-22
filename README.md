@@ -187,6 +187,7 @@ GUIDs
 - 1.2 @ 22.07.2020 12:13 (beta)
   - LICENSE.md hinzugefügt
   - Nutzung von HasActiveParent(): Anzeige im Konfigurationsformular sowie entsprechende Absicherung von SendDataToParent()
+  - lokale Funktionen aus common.php in locale.php verlagert
 
 - 1.1 @ 06.07.2020 15:12
   - Einrichtung php-cs-fixer und github-workflows
