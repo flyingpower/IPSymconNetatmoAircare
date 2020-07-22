@@ -85,7 +85,7 @@ class NetatmoAircareConfig extends IPSModule
         return $entry;
     }
 
-    public function getConfiguratorValues()
+    private function getConfiguratorValues()
     {
         $entries = [];
 
@@ -156,8 +156,7 @@ class NetatmoAircareConfig extends IPSModule
         ];
 
         $entries = $this->getConfiguratorValues();
-
-        $configurator = [
+        $formElements[] = [
             'type'    => 'Configurator',
             'name'    => 'products',
             'caption' => 'Products',
@@ -189,8 +188,6 @@ class NetatmoAircareConfig extends IPSModule
             ],
             'values' => $entries,
         ];
-
-        $formElements[] = $configurator;
 
         return $formElements;
     }
