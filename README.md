@@ -184,11 +184,12 @@ GUIDs
 
 ## 7. Versions-Historie
 
-- 1.2 @ 22.07.2020 12:13 (beta)
+- 1.2 @ 05.09.2020 11:12 (beta)
   - LICENSE.md hinzugefügt
   - Nutzung von HasActiveParent(): Anzeige im Konfigurationsformular sowie entsprechende Absicherung von SendDataToParent()
   - lokale Funktionen aus common.php in locale.php verlagert
   - Traits des Moduls haben nun Postfix "Lib"
+  - define's durch statische Klassen-Variablen ersetzt
 
 - 1.1 @ 06.07.2020 15:12
   - Einrichtung php-cs-fixer und github-workflows
