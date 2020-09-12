@@ -184,7 +184,7 @@ GUIDs
 
 ## 7. Versions-Historie
 
-- 1.2 @ 05.09.2020 11:12 (beta)
+- 1.2 @ 05.09.2020 11:12
   - LICENSE.md hinzugefügt
   - Nutzung von HasActiveParent(): Anzeige im Konfigurationsformular sowie entsprechende Absicherung von SendDataToParent()
   - lokale Funktionen aus common.php in locale.php verlagert
