@@ -16,7 +16,7 @@ trait NetatmoAircareLocalLib
     public static $IS_NOSYMCONCONNECT = IS_EBASE + 10;
     public static $IS_NOLOGIN = IS_EBASE + 13;
 
-    public static $STATUS_VALID = 0;
+    public static $STATUS_INVALID = 0;
     public static $STATUS_VALID = 1;
     public static $STATUS_RETRYABLE = 2;
 
