@@ -184,6 +184,9 @@ GUIDs
 
 ## 7. Versions-Historie
 
+- 1.3 @ 18.12.2020 14:57 (beta)
+  - PHP_CS_FIXER_IGNORE_ENV=1 in github/workflows/style.yml eingefügt
+
 - 1.2 @ 12.09.2020 12:18
   - LICENSE.md hinzugefügt
   - Nutzung von HasActiveParent(): Anzeige im Konfigurationsformular sowie entsprechende Absicherung von SendDataToParent()
