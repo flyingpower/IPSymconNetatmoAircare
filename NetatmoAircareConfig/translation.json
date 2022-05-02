@@ -1,0 +1,23 @@
+{
+	"translations": {
+		"de": {
+			"Netatmo Aircare Configurator": "Netatmo Aircare Konfigurator",
+
+            "__elements__": "",
+            "category for products to be created": "Kategorie für anzulegende Produkte",
+
+			"Product": "Produkt",
+			"Products": "Produkte",
+
+			"Sensor": "Sensor",
+
+			"Category": "Kategorie",
+			"Name": "Name",
+			"Id": "Id",
+
+			"Room air sensor": "Raumluftsensor",
+
+			"__end__": ""
+		}
+	}
+}

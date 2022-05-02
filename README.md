@@ -1,6 +1,6 @@
 # IPSymconNetatmoAircare
 
-[![IPS-Version](https://img.shields.io/badge/Symcon_Version-5.3+-red.svg)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
+[![IPS-Version](https://img.shields.io/badge/Symcon_Version-6.0+-red.svg)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
 ![Code](https://img.shields.io/badge/Code-PHP-blue.svg)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-green.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
@@ -23,7 +23,7 @@ Anschluss der Geräte, die von Netatmo unter dem Beriff _Aircare_ zusammengefass
 
 ## 2. Voraussetzungen
 
- - IP-Symcon ab Version 5.3
+ - IP-Symcon ab Version 6.0
  - ein Netatmo Aircare-Modul
  - den "normalen" Benutzer-Account, der bei der Anmeldung der Geräte bei Netatmo erzeugt wird (https://my.netatmo.com)
  - IP-Symcon Connect<br>
@@ -183,6 +183,13 @@ GUIDs
   - `{53264646-2842-AA77-59F7-3722D44C2100}`: an NetatmoAircareSensor
 
 ## 7. Versions-Historie
+
+- 1.4 @ 02.05.2022 17:59
+  - Anpassungen an IPS 6.2 (Prüfung auf ungültige ID's)
+  - IPS-Version ist nun minimal 6.0
+  - Anzeige der Referenzen der Instanz incl. Statusvariablen und Instanz-Timer
+  - Implememtierung einer Update-Logik
+  - diverse interne Änderungen
 
 - 1.3 @ 14.07.2021 18:13
   - PHP_CS_FIXER_IGNORE_ENV=1 in github/workflows/style.yml eingefügt

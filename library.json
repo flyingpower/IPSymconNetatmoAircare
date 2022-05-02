@@ -4,9 +4,9 @@
 	"name": "NetatmoAircare",
 	"url": "https://github.com/demel42/IPSymconNetatmoAircare",
 	"compatibility": {
-		"version": "5.3"
+		"version": "6.0"
 	},
-	"version": "1.3",
+	"version": "1.4",
 	"build": 0,
-	"date": 1626279229
+	"date": 1651507153
 }

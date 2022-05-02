@@ -1,15 +1,17 @@
 {
 	"translations": {
 		"de": {
-			"Instance has no active parent instance": "Instanz hat keine aktive übergeordnete Instanz",
-
-			"Disable instance": "Instanz deaktivieren",
-
 			"Netatmo Aircare": "Netamo Luftüberwachung",
 			"Netatmo Room air sensor": "Netatmo Raumluftsensor",
 
-			"Basic configuration (don't change)": "Basis-Konfiguration (nicht ändern)",
+			"__function__": "CheckConfiguration",
+			"Product-Type must be specified": "Produkt-Typ muss angegeben sein",
+            "Product-ID must be specified": "Produkt-ID muss angegeben sein",
 
+			"__elements__": "",
+			"Disable instance": "Instanz deaktivieren",
+
+			"Basic configuration (don't change)": "Basis-Konfiguration (nicht ändern)",
 			"Product-Type": "Produkt-Typ",
 			"Product-ID": "Produkt-ID",
 
@@ -30,6 +32,7 @@
 				"Dauer bis die Verbindung zu Netatmo oder zwischen den Stationen als gestört gilt",
 			"Minutes": "Minuten",
 
+			"__variables__": "",
 			"absolute humidity": "absolute Luftfeuchtigkeit",
 			"Air pressure": "Luftdruck",
 			"Air Quality Health Index": "Luftqualität",
@@ -47,33 +50,7 @@
 			"Today's temperature-maximum": "heutiges Temperatur-Maximum",
 			"Today's temperature-minimum": "heutiges Temperatur-Minimum",
 
-			"bad": "schwach",
-			"average": "mittel",
-			"good": "gut",
-
-			"Healthy": "Gesund",
-			"Fine": "Gut",
-			"Fair": "in Ordnung",
-			"Poor": "Schlecht",
-			"Unhealthy": "Ungesund",
-
-			"Instance getting created": "Instanz wird erstellt",
-			"Instance is active": "Instanz ist aktiv",
-			"Instance is deleted": "Instanz wird gelöscht",
-			"Instance is inactive": "Instanz ist inaktiv",
-			"Instance is not created": "Instanz wurde nicht erzeugt",
-
-			"Instance is inactive (no data)": "Instanz ist inaktiv (keine Daten)",
-			"Instance is inactive (unauthorized)": "Instanz ist inaktiv (Authorisierung fehlerhaft)",
-			"Instance is inactive (forbidden)": "Instanz ist inaktiv (fehlende Berechtigung)",
-			"Instance is inactive (server error)": "Instanz ist inaktiv (Serverfehler)",
-			"Instance is inactive (http error)": "Instanz ist inaktiv (HTTP-Fehler)",
-			"Instance is inactive (invalid data)": "Instanz ist inaktiv (ungültige Daten)",
-			"Instance is inactive (no product)": "Instanz ist inaktiv (kein Produkt)",
-			"Instance is inactive (product missing)": "Instanz ist inaktiv (Produkt ist unbekannt)",
-			"Instance is inactive (invalid config)": "Instanz ist inaktiv (ungültige Konfiguration)",
-			"Instance is inactive (no Symcon-Connect)": "Instanz ist inaktiv (kein Symcon-Connect)",
-			"Instance is inactive (not logged in)": "Instanz ist inaktiv (nicht angemeldet)"
+			"__end__": ""
 		}
 	}
 }

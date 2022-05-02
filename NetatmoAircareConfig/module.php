@@ -2,19 +2,32 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/../libs/common.php';  // globale Funktionen
-require_once __DIR__ . '/../libs/local.php';   // lokale Funktionen
+require_once __DIR__ . '/../libs/common.php';
+require_once __DIR__ . '/../libs/local.php';
 
 class NetatmoAircareConfig extends IPSModule
 {
-    use NetatmoAircareCommonLib;
+    use NetatmoAircare\StubsCommonLib;
     use NetatmoAircareLocalLib;
+
+    private $ModuleDir;
+
+    public function __construct(string $InstanceID)
+    {
+        parent::__construct($InstanceID);
+
+        $this->ModuleDir = __DIR__;
+    }
 
     public function Create()
     {
         parent::Create();
 
         $this->RegisterPropertyInteger('ImportCategoryID', 0);
+
+        $this->RegisterAttributeString('UpdateInfo', '');
+
+        $this->InstallVarProfiles(false);
 
         $this->ConnectParent('{070C93FD-9D19-D670-2C73-20104B87F034}');
     }
@@ -23,16 +36,22 @@ class NetatmoAircareConfig extends IPSModule
     {
         parent::ApplyChanges();
 
-        $refs = $this->GetReferenceList();
-        foreach ($refs as $ref) {
-            $this->UnregisterReference($ref);
-        }
         $propertyNames = ['ImportCategoryID'];
-        foreach ($propertyNames as $name) {
-            $oid = $this->ReadPropertyInteger($name);
-            if ($oid > 0) {
-                $this->RegisterReference($oid);
-            }
+        $this->MaintainReferences($propertyNames);
+
+        if ($this->CheckPrerequisites() != false) {
+            $this->SetStatus(self::$IS_INVALIDPREREQUISITES);
+            return;
+        }
+
+        if ($this->CheckUpdate() != false) {
+            $this->SetStatus(self::$IS_UPDATEUNCOMPLETED);
+            return;
+        }
+
+        if ($this->CheckConfiguration() != false) {
+            $this->SetStatus(self::$IS_INVALIDCONFIG);
+            return;
         }
 
         $this->SetStatus(IS_ACTIVE);
@@ -40,19 +59,20 @@ class NetatmoAircareConfig extends IPSModule
 
     private function SetLocation()
     {
-        $category = $this->ReadPropertyInteger('ImportCategoryID');
+        $catID = $this->ReadPropertyInteger('ImportCategoryID');
         $tree_position = [];
-        if ($category > 0 && IPS_ObjectExists($category)) {
-            $tree_position[] = IPS_GetName($category);
-            $parent = IPS_GetObject($category)['ParentID'];
-            while ($parent > 0) {
-                if ($parent > 0) {
-                    $tree_position[] = IPS_GetName($parent);
+        if ($catID >= 10000 && IPS_ObjectExists($catID)) {
+            $tree_position[] = IPS_GetName($catID);
+            $parID = IPS_GetObject($catID)['ParentID'];
+            while ($parID > 0) {
+                if ($parID > 0) {
+                    $tree_position[] = IPS_GetName($parID);
                 }
-                $parent = IPS_GetObject($parent)['ParentID'];
+                $parID = IPS_GetObject($parID)['ParentID'];
             }
             $tree_position = array_reverse($tree_position);
         }
+        $this->SendDebug(__FUNCTION__, 'tree_position=' . print_r($tree_position, true), 0);
         return $tree_position;
     }
 
@@ -91,18 +111,23 @@ class NetatmoAircareConfig extends IPSModule
     {
         $entries = [];
 
+        if ($this->CheckStatus() == self::$STATUS_INVALID) {
+            $this->SendDebug(__FUNCTION__, $this->GetStatusText() . ' => skip', 0);
+            return $entries;
+        }
+
         if ($this->HasActiveParent() == false) {
             $this->SendDebug(__FUNCTION__, 'has no active parent', 0);
-            $this->LogMessage('has no active parent instance', KL_WARNING);
             return $entries;
         }
 
         $SendData = ['DataID' => '{076043C4-997E-6AB3-9978-DA212D50A9F5}', 'Function' => 'LastData'];
         $data = $this->SendDataToParent(json_encode($SendData));
-        $this->SendDebug(__FUNCTION__, 'data=' . $data, 0);
+        $jdata = json_decode($data, true);
 
-        if ($data != '') {
-            $jdata = json_decode($data, true);
+        $this->SendDebug(__FUNCTION__, 'jdata=' . print_r($jdata, true), 0);
+
+        if (is_array($jdata)) {
             if (isset($jdata['body']['devices'])) {
                 $devices = $jdata['body']['devices'];
                 foreach ($devices as $device) {
@@ -133,28 +158,58 @@ class NetatmoAircareConfig extends IPSModule
             }
         }
 
+        $modules = [
+            [
+                'category' => 'Room air sensor',
+                'guid'     => '{F3940032-CC4B-9E69-383A-6FFAD13C5438}',
+            ],
+        ];
+        foreach ($modules as $module) {
+            $category = $this->Translate($module['category']);
+            $instIDs = IPS_GetInstanceListByModuleID($module['guid']);
+            foreach ($instIDs as $instID) {
+                $fnd = false;
+                foreach ($entries as $entry) {
+                    if ($entry['instanceID'] == $instID) {
+                        $fnd = true;
+                        break;
+                    }
+                }
+                if ($fnd) {
+                    continue;
+                }
+
+                $product_name = IPS_GetName($instID);
+                $home_name = '';
+                $product_id = IPS_GetProperty($instID, 'product_id');
+
+                $entry = [
+                    'instanceID' => $instID,
+                    'category'   => $category,
+                    'home'       => $home_name,
+                    'name'       => $product_name,
+                    'product_id' => $product_id,
+                ];
+                $entries[] = $entry;
+                $this->SendDebug(__FUNCTION__, 'missing entry=' . print_r($entry, true), 0);
+            }
+        }
+
         return $entries;
     }
 
     private function GetFormElements()
     {
-        $formElements = [];
+        $formElements = $this->GetCommonFormElements('Netatmo Aircare Configurator');
 
-        if ($this->HasActiveParent() == false) {
-            $formElements[] = [
-                'type'    => 'Label',
-                'caption' => 'Instance has no active parent instance',
-            ];
+        if ($this->GetStatus() == self::$IS_UPDATEUNCOMPLETED) {
+            return $formElements;
         }
 
         $formElements[] = [
-            'type'    => 'Label',
-            'caption' => 'category for products to be created:'
-        ];
-        $formElements[] = [
             'type'    => 'SelectCategory',
             'name'    => 'ImportCategoryID',
-            'caption' => 'category'
+            'caption' => 'category for products to be created'
         ];
 
         $entries = $this->getConfiguratorValues();
@@ -198,6 +253,30 @@ class NetatmoAircareConfig extends IPSModule
     {
         $formActions = [];
 
+        if ($this->GetStatus() == self::$IS_UPDATEUNCOMPLETED) {
+            $formActions[] = $this->GetCompleteUpdateFormAction();
+
+            $formActions[] = $this->GetInformationFormAction();
+            $formActions[] = $this->GetReferencesFormAction();
+
+            return $formActions;
+        }
+
+        $formActions[] = $this->GetInformationFormAction();
+        $formActions[] = $this->GetReferencesFormAction();
+
         return $formActions;
+    }
+
+    public function RequestAction($ident, $value)
+    {
+        if ($this->CommonRequestAction($ident, $value)) {
+            return;
+        }
+        switch ($ident) {
+            default:
+                $this->SendDebug(__FUNCTION__, 'invalid ident ' . $ident, 0);
+                break;
+        }
     }
 }

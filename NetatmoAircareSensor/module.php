@@ -2,13 +2,22 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/../libs/common.php';  // globale Funktionen
-require_once __DIR__ . '/../libs/local.php';   // lokale Funktionen
+require_once __DIR__ . '/../libs/common.php';
+require_once __DIR__ . '/../libs/local.php';
 
 class NetatmoAircareSensor extends IPSModule
 {
-    use NetatmoAircareCommonLib;
+    use NetatmoAircare\StubsCommonLib;
     use NetatmoAircareLocalLib;
+
+    private $ModuleDir;
+
+    public function __construct(string $InstanceID)
+    {
+        parent::__construct($InstanceID);
+
+        $this->ModuleDir = __DIR__;
+    }
 
     public function Create()
     {
@@ -29,53 +38,50 @@ class NetatmoAircareSensor extends IPSModule
         $this->RegisterPropertyBoolean('with_minmax', false);
         $this->RegisterPropertyInteger('minutes2fail', 30);
 
-        $associations = [];
-        $associations[] = ['Wert' => 0, 'Name' => $this->Translate('Healthy'), 'Farbe' => 0x88A4C9];	// blau
-        $associations[] = ['Wert' => 1, 'Name' => $this->Translate('Fine'), 'Farbe' => 0x68C29F];		// grün
-        $associations[] = ['Wert' => 2, 'Name' => $this->Translate('Fair'), 'Farbe' => 0xF5E552];		// gelb
-        $associations[] = ['Wert' => 3, 'Name' => $this->Translate('Poor'), 'Farbe' => 0xF6C57C];		// orange
-        $associations[] = ['Wert' => 4, 'Name' => $this->Translate('Unhealthy'), 'Farbe' => 0xED7071];	// rot
-        $this->CreateVarProfile('NetatmoAircare.Index', VARIABLETYPE_INTEGER, '', 0, 0, 0, 1, '', $associations);
+        $this->RegisterAttributeString('UpdateInfo', '');
 
-        $associations = [];
-        $associations[] = ['Wert' =>  0, 'Name' => '%d', 'Farbe' => 0x88A4C9];
-        $associations[] = ['Wert' => 56, 'Name' => '%d', 'Farbe' => 0x68C29F];
-        $associations[] = ['Wert' => 65, 'Name' => '%d', 'Farbe' => 0xF5E552];
-        $associations[] = ['Wert' => 70, 'Name' => '%d', 'Farbe' => 0xF6C57C];
-        $associations[] = ['Wert' => 80, 'Name' => '%d', 'Farbe' => 0xED7071];
-        $this->CreateVarProfile('NetatmoAircare.Noise', VARIABLETYPE_INTEGER, ' dB', 0, 130, 0, 1, 'Speaker', $associations);
-
-        $associations = [];
-        $associations[] = ['Wert' =>    0, 'Name' => '%d', 'Farbe' => 0x88A4C9];
-        $associations[] = ['Wert' =>  900, 'Name' => '%d', 'Farbe' => 0x68C29F];
-        $associations[] = ['Wert' => 1150, 'Name' => '%d', 'Farbe' => 0xF5E552];
-        $associations[] = ['Wert' => 1400, 'Name' => '%d', 'Farbe' => 0xF6C57C];
-        $associations[] = ['Wert' => 1600, 'Name' => '%d', 'Farbe' => 0xED7071];
-        $this->CreateVarProfile('NetatmoAircare.CO2', VARIABLETYPE_INTEGER, ' ppm', 250, 2000, 0, 1, 'Gauge', $associations);
-
-        $associations = [];
-        $associations[] = ['Wert' => 0, 'Name' => $this->wifi_strength2text(0), 'Farbe' => 0xEE0000];
-        $associations[] = ['Wert' => 1, 'Name' => $this->wifi_strength2text(1), 'Farbe' => 0xFFFF00];
-        $associations[] = ['Wert' => 2, 'Name' => $this->wifi_strength2text(2), 'Farbe' => 0x32CD32];
-        $this->CreateVarProfile('NetatmoAircare.WifiStrength', VARIABLETYPE_INTEGER, '', 0, 0, 0, 1, 'Intensity', $associations);
-
-        $this->CreateVarProfile('NetatmoAircare.Temperatur', VARIABLETYPE_FLOAT, ' °C', -10, 30, 0, 1, 'Temperature');
-        $this->CreateVarProfile('NetatmoAircare.Pressure', VARIABLETYPE_FLOAT, ' mbar', 500, 1200, 0, 0, 'Gauge');
-        $this->CreateVarProfile('NetatmoAircare.Humidity', VARIABLETYPE_FLOAT, ' %', 0, 0, 0, 0, 'Drops');
-        $this->CreateVarProfile('NetatmoAircare.absHumidity', VARIABLETYPE_FLOAT, ' g/m³', 10, 100, 0, 0, 'Drops');
-        $this->CreateVarProfile('NetatmoAircare.Dewpoint', VARIABLETYPE_FLOAT, ' °C', 0, 30, 0, 0, 'Drops');
-        $this->CreateVarProfile('NetatmoAircare.Heatindex', VARIABLETYPE_FLOAT, ' °C', 0, 100, 0, 0, 'Temperature');
+        $this->InstallVarProfiles(false);
 
         $this->ConnectParent('{070C93FD-9D19-D670-2C73-20104B87F034}');
+    }
+
+    private function CheckModuleConfiguration()
+    {
+        $r = [];
+
+        $product_type = $this->ReadPropertyString('product_type');
+        if ($product_type == '') {
+            $this->SendDebug(__FUNCTION__, '"product_type" is empty', 0);
+            $r[] = $this->Translate('Product-Type must be specified');
+        }
+
+        $product_id = $this->ReadPropertyString('product_id');
+        if ($product_id == '') {
+            $this->SendDebug(__FUNCTION__, '"product_id" is empty', 0);
+            $r[] = $this->Translate('Product-ID must be specified');
+        }
+
+        return $r;
     }
 
     public function ApplyChanges()
     {
         parent::ApplyChanges();
 
-        $module_disable = $this->ReadPropertyBoolean('module_disable');
-        if ($module_disable) {
-            $this->SetStatus(IS_INACTIVE);
+        $this->MaintainReferences();
+
+        if ($this->CheckPrerequisites() != false) {
+            $this->SetStatus(self::$IS_INVALIDPREREQUISITES);
+            return;
+        }
+
+        if ($this->CheckUpdate() != false) {
+            $this->SetStatus(self::$IS_UPDATEUNCOMPLETED);
+            return;
+        }
+
+        if ($this->CheckConfiguration() != false) {
+            $this->SetStatus(self::$IS_INVALIDCONFIG);
             return;
         }
 
@@ -115,26 +121,17 @@ class NetatmoAircareSensor extends IPSModule
         $product_info = $product_id . ' (' . $product_type . ')';
         $this->SetSummary($product_info);
 
+        $module_disable = $this->ReadPropertyBoolean('module_disable');
+        if ($module_disable) {
+            $this->SetStatus(IS_INACTIVE);
+            return;
+        }
+
         $this->SetStatus(IS_ACTIVE);
     }
 
     private function GetFormElements()
     {
-        $formElements = [];
-
-        if ($this->HasActiveParent() == false) {
-            $formElements[] = [
-                'type'    => 'Label',
-                'caption' => 'Instance has no active parent instance',
-            ];
-        }
-
-        $formElements[] = [
-            'type'    => 'CheckBox',
-            'name'    => 'module_disable',
-            'caption' => 'Disable instance'
-        ];
-
         $product_type = $this->ReadPropertyString('product_type');
         switch ($product_type) {
             case 'NHC':
@@ -145,94 +142,105 @@ class NetatmoAircareSensor extends IPSModule
                 break;
         }
 
-        $formElements[] = [
-            'type'    => 'Label',
-            'caption' => $product_type_s];
+        $formElements = $this->GetCommonFormElements($product_type_s);
 
-        $items = [];
-        $items[] = [
-            'type'    => 'ValidationTextBox',
-            'name'    => 'product_type',
-            'caption' => 'Product-Type'
-        ];
-        $items[] = [
-            'type'    => 'ValidationTextBox',
-            'name'    => 'product_id',
-            'caption' => 'Product-ID'
-        ];
+        if ($this->GetStatus() == self::$IS_UPDATEUNCOMPLETED) {
+            return $formElements;
+        }
+
         $formElements[] = [
-            'type'    => 'ExpansionPanel',
-            'items'   => $items,
-            'caption' => 'Basic configuration (don\'t change)'
+            'type'    => 'CheckBox',
+            'name'    => 'module_disable',
+            'caption' => 'Disable instance'
         ];
 
-        $items = [];
-        $items[] = [
-            'type'    => 'CheckBox',
-            'name'    => 'with_last_contact',
-            'caption' => 'last transmission to Netatmo'
-        ];
-        $items[] = [
-            'type'    => 'CheckBox',
-            'name'    => 'with_last_measure',
-            'caption' => 'Measurement-Timestamp'
-        ];
-        $items[] = [
-            'type'    => 'CheckBox',
-            'name'    => 'with_wifi_strength',
-            'caption' => 'Strength of wifi-signal'
-        ];
         $formElements[] = [
             'type'    => 'ExpansionPanel',
-            'items'   => $items,
-            'caption' => 'optional data'
+            'items'   => [
+                [
+                    'type'    => 'ValidationTextBox',
+                    'enabled' => false,
+                    'name'    => 'product_type',
+                    'caption' => 'Product-Type'
+                ],
+                [
+                    'type'    => 'ValidationTextBox',
+                    'enabled' => false,
+                    'name'    => 'product_id',
+                    'caption' => 'Product-ID'
+                ],
+            ],
+            'caption' => 'Basic configuration (don\'t change)',
         ];
 
-        $items = [];
-        $items[] = [
-            'type'    => 'CheckBox',
-            'name'    => 'with_absolute_pressure',
-            'caption' => 'absolute pressure'
-        ];
-        $items[] = [
-            'type'    => 'CheckBox',
-            'name'    => 'with_absolute_humidity',
-            'caption' => 'absolute humidity'
-        ];
-        $items[] = [
-            'type'    => 'CheckBox',
-            'name'    => 'with_dewpoint',
-            'caption' => 'Dewpoint'
-        ];
-        $items[] = [
-            'type'    => 'CheckBox',
-            'name'    => 'with_heatindex',
-            'caption' => 'Heatindex'
-        ];
-        $items[] = [
-            'type'    => 'CheckBox',
-            'name'    => 'with_minmax',
-            'caption' => 'Min/Max of temperature'
-        ];
         $formElements[] = [
             'type'    => 'ExpansionPanel',
-            'items'   => $items,
+            'items'   => [
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'with_last_contact',
+                    'caption' => 'last transmission to Netatmo'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'with_last_measure',
+                    'caption' => 'Measurement-Timestamp'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'with_wifi_strength',
+                    'caption' => 'Strength of wifi-signal'
+                ],
+            ],
+            'caption' => 'optional data',
+        ];
+
+        $formElements[] = [
+            'type'    => 'ExpansionPanel',
+            'items'   => [
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'with_absolute_pressure',
+                    'caption' => 'absolute pressure'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'with_absolute_humidity',
+                    'caption' => 'absolute humidity'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'with_dewpoint',
+                    'caption' => 'Dewpoint'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'with_heatindex',
+                    'caption' => 'Heatindex'
+                ],
+                [
+                    'type'    => 'CheckBox',
+                    'name'    => 'with_minmax',
+                    'caption' => 'Min/Max of temperature'
+                ],
+            ],
             'caption' => 'optional weather data'
         ];
 
-        $items = [];
-        $items[] = [
-            'type'    => 'Label',
-            'caption' => 'Duration until the connection to netatmo or between stations is marked disturbed'
-        ];
-        $items[] = [
-            'type'    => 'NumberSpinner',
-            'name'    => 'minutes2fail',
-            'caption' => 'Minutes'
-        ];
         $formElements[] = [
             'type'    => 'ExpansionPanel',
-            'items'   => $items,
+            'items'   => [
+                [
+                    'type'    => 'Label',
+                    'caption' => 'Duration until the connection to netatmo or between stations is marked disturbed'
+                ],
+                [
+                    'type'     => 'NumberSpinner',
+                    'minimum'  => 0,
+                    'suffix'   => 'Minutes',
+                    'name'     => 'minutes2fail',
+                ],
+            ],
             'caption' => 'Processing information'
         ];
 
@@ -242,6 +250,18 @@ class NetatmoAircareSensor extends IPSModule
     private function GetFormActions()
     {
         $formActions = [];
+
+        if ($this->GetStatus() == self::$IS_UPDATEUNCOMPLETED) {
+            $formActions[] = $this->GetCompleteUpdateFormAction();
+
+            $formActions[] = $this->GetInformationFormAction();
+            $formActions[] = $this->GetReferencesFormAction();
+
+            return $formActions;
+        }
+
+        $formActions[] = $this->GetInformationFormAction();
+        $formActions[] = $this->GetReferencesFormAction();
 
         return $formActions;
     }
@@ -360,53 +380,16 @@ class NetatmoAircareSensor extends IPSModule
         $this->SetStatus(IS_ACTIVE);
     }
 
-    // Wifi-Strength
-    private function map_wifi_strength($strength)
+    public function RequestAction($ident, $value)
     {
-        if ($strength <= 56) {
-            // "good"
-            $val = 2;
-        } elseif ($strength <= 71) {
-            // "average"
-            $val = 1;
-        } else {
-            // "bad"
-            $val = 0;
+        if ($this->CommonRequestAction($ident, $value)) {
+            return;
         }
-
-        return $val;
-    }
-
-    private function wifi_strength2text($strength)
-    {
-        $strength2txt = [
-            'bad',
-            'average',
-            'good',
-        ];
-
-        if ($strength >= 0 && $strength < count($strength2txt)) {
-            $txt = $this->Translate($strength2txt[$strength]);
-        } else {
-            $txt = '';
+        switch ($ident) {
+            default:
+                $this->SendDebug(__FUNCTION__, 'invalid ident ' . $ident, 0);
+                break;
         }
-        return $txt;
-    }
-
-    private function wifi_strength2icon($strength)
-    {
-        $strength2icon = [
-            'wifi_low.png',
-            'wifi_medium.png',
-            'wifi_high.png',
-        ];
-
-        if ($strength >= 0 && $strength < count($strength2icon)) {
-            $img = $strength2icon[$strength];
-        } else {
-            $img = '';
-        }
-        return $img;
     }
 
     public function WifiStrength2Icon(string $wifi_strength, bool $asPath)
