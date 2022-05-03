@@ -61,54 +61,15 @@ trait NetatmoAircareLocalLib
     public static $CONNECTION_OAUTH = 1;
     public static $CONNECTION_DEVELOPER = 2;
 
-    // Wifi-Strength
-    private function map_wifi_strength($strength)
-    {
-        if ($strength <= 56) {
-            // "good"
-            $val = 2;
-        } elseif ($strength <= 71) {
-            // "average"
-            $val = 1;
-        } else {
-            // "bad"
-            $val = 0;
-        }
+    public static $WIFI_LOW = 0;
+    public static $WIFI_AVERAGE = 1;
+    public static $WIFI_HIGH = 2;
 
-        return $val;
-    }
-
-    private function wifi_strength2text($strength)
-    {
-        $strength2txt = [
-            'bad',
-            'average',
-            'good',
-        ];
-
-        if ($strength >= 0 && $strength < count($strength2txt)) {
-            $txt = $this->Translate($strength2txt[$strength]);
-        } else {
-            $txt = '';
-        }
-        return $txt;
-    }
-
-    private function wifi_strength2icon($strength)
-    {
-        $strength2icon = [
-            'wifi_low.png',
-            'wifi_medium.png',
-            'wifi_high.png',
-        ];
-
-        if ($strength >= 0 && $strength < count($strength2icon)) {
-            $img = $strength2icon[$strength];
-        } else {
-            $img = '';
-        }
-        return $img;
-    }
+    public static $INDEX_HEALTY = 0;
+    public static $INDEX_FINE = 1;
+    public static $INDEX_FAIR = 2;
+    public static $INDEX_POOR = 3;
+    public static $INDEX_UNHEALTY = 4;
 
     public function InstallVarProfiles(bool $reInstall = false)
     {
@@ -117,11 +78,11 @@ trait NetatmoAircareLocalLib
         }
 
         $associations = [
-            ['Wert' => 0, 'Name' => $this->Translate('Healthy'), 'Farbe' => 0x88A4C9],
-            ['Wert' => 1, 'Name' => $this->Translate('Fine'), 'Farbe' => 0x68C29F],
-            ['Wert' => 2, 'Name' => $this->Translate('Fair'), 'Farbe' => 0xF5E552],
-            ['Wert' => 3, 'Name' => $this->Translate('Poor'), 'Farbe' => 0xF6C57C],
-            ['Wert' => 4, 'Name' => $this->Translate('Unhealthy'), 'Farbe' => 0xED7071],	// rot
+            ['Wert' => self::$INDEX_HEALTY, 'Name' => $this->Translate('Healthy'), 'Farbe' => 0x88A4C9],
+            ['Wert' => self::$INDEX_FINE, 'Name' => $this->Translate('Fine'), 'Farbe' => 0x68C29F],
+            ['Wert' => self::$INDEX_FAIR, 'Name' => $this->Translate('Fair'), 'Farbe' => 0xF5E552],
+            ['Wert' => self::$INDEX_POOR, 'Name' => $this->Translate('Poor'), 'Farbe' => 0xF6C57C],
+            ['Wert' => self::$INDEX_UNHEALTY, 'Name' => $this->Translate('Unhealthy'), 'Farbe' => 0xED7071]
         ];
         $this->CreateVarProfile('NetatmoAircare.Index', VARIABLETYPE_INTEGER, '', 0, 0, 0, 1, '', $associations, $reInstall);
 
@@ -144,9 +105,9 @@ trait NetatmoAircareLocalLib
         $this->CreateVarProfile('NetatmoAircare.CO2', VARIABLETYPE_INTEGER, ' ppm', 250, 2000, 0, 1, 'Gauge', $associations, $reInstall);
 
         $associations = [
-            ['Wert' => 0, 'Name' => $this->wifi_strength2text(0), 'Farbe' => 0xEE0000],
-            ['Wert' => 1, 'Name' => $this->wifi_strength2text(1), 'Farbe' => 0xFFFF00],
-            ['Wert' => 2, 'Name' => $this->wifi_strength2text(2), 'Farbe' => 0x32CD32],
+            ['Wert' => self::$WIFI_LOW, 'Name' => $this->Translate('low'), 'Farbe' => 0xEE0000],
+            ['Wert' => self::$WIFI_AVERAGE, 'Name' => $this->Translate('average'), 'Farbe' => 0xFFFF00],
+            ['Wert' => self::$WIFI_HIGH, 'Name' => $this->Translate('high'), 'Farbe' => 0x32CD32],
         ];
         $this->CreateVarProfile('NetatmoAircare.WifiStrength', VARIABLETYPE_INTEGER, '', 0, 0, 0, 1, 'Intensity', $associations, $reInstall);
 

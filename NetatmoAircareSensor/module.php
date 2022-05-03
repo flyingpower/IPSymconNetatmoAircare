@@ -260,6 +260,19 @@ class NetatmoAircareSensor extends IPSModule
             return $formActions;
         }
 
+        $formActions[] = [
+            'type'      => 'ExpansionPanel',
+            'caption'   => 'Expert area',
+            'expanded ' => false,
+            'items'     => [
+                [
+                    'type'    => 'Button',
+                    'caption' => 'Re-install variable-profiles',
+                    'onClick' => $this->GetModulePrefix() . '_InstallVarProfiles($id, true);'
+                ],
+            ],
+        ];
+
         $formActions[] = $this->GetInformationFormAction();
         $formActions[] = $this->GetReferencesFormAction();
 
@@ -390,6 +403,41 @@ class NetatmoAircareSensor extends IPSModule
                 $this->SendDebug(__FUNCTION__, 'invalid ident ' . $ident, 0);
                 break;
         }
+    }
+
+    // Wifi-Strength
+    private function map_wifi_strength($strength)
+    {
+        if ($strength <= 56) {
+            $val = self::$WIFI_HIGH;
+        } elseif ($strength <= 71) {
+            $val = self::$WIFI_MEDIUM;
+        } else {
+            $val = self::$WIFI_LOW;
+        }
+
+        return $val;
+    }
+
+    private function wifi_strength2text($strength)
+    {
+        return $this->CheckVarProfile4Value('NetatmoAircare.WifiStrength', $status);
+    }
+
+    private function wifi_strength2icon($strength)
+    {
+        $strength2icon = [
+            'wifi_low.png',
+            'wifi_medium.png',
+            'wifi_high.png',
+        ];
+
+        if ($strength >= 0 && $strength < count($strength2icon)) {
+            $img = $strength2icon[$strength];
+        } else {
+            $img = '';
+        }
+        return $img;
     }
 
     public function WifiStrength2Icon(string $wifi_strength, bool $asPath)

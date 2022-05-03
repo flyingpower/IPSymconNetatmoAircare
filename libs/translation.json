@@ -1,10 +1,10 @@
 {
 	"translations": {
 		"de": {
-			"__variableprofile__": NetatmoAircare.WifiStrength",
-			"bad": "schwach",
+			"__variableprofile__": "NetatmoAircare.WifiStrength",
+			"low": "niedrig",
 			"average": "mittel",
-			"good": "gut",
+			"high": "hoch",
 
 			"__variableprofile__": "NetatmoAircare.Index",
 			"Healthy": "Gesund",

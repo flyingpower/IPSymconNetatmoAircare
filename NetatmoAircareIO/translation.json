@@ -1,13 +1,13 @@
 {
 	"translations": {
 		"de": {
-            "Netatmo Aircare I/O": "Netatmo Aircare I/O",
+			"Netatmo Aircare I/O": "Netatmo Aircare I/O",
 
-            "__function__": "CheckConfiguration",
-            "Username must be specified": "Benutzername muss angegeben sein",
-            "Password must be specified": "Passwort muss angegeben sein",
-            "Client-ID must be specified": "Client-ID muss angegeben sein",
-            "Client-Secret must be specified": "Client-Secret  muss angegeben sein",
+			"__function__": "CheckConfiguration",
+			"Username must be specified": "Benutzername muss angegeben sein",
+			"Password must be specified": "Passwort muss angegeben sein",
+			"Client-ID must be specified": "Client-ID muss angegeben sein",
+			"Client-Secret must be specified": "Client-Secret  muss angegeben sein",
 
 			"__elements__": "",
 			"Disable instance": "Instanz deaktivieren",
