@@ -57,39 +57,6 @@ class NetatmoAircareConfig extends IPSModule
         $this->MaintainStatus(IS_ACTIVE);
     }
 
-    private function buildEntry($guid, $product_type, $product_id, $product_name, $product_category)
-    {
-        $instID = 0;
-        $instIDs = IPS_GetInstanceListByModuleID($guid);
-        foreach ($instIDs as $id) {
-            $prodID = IPS_GetProperty($id, 'product_id');
-            if ($prodID == $product_id) {
-                $instID = $id;
-                break;
-            }
-        }
-
-        $catID = $this->ReadPropertyInteger('ImportCategoryID');
-
-        $entry = [
-            'category'   => $this->Translate($product_category),
-            'name'       => $product_name,
-            'product_id' => $product_id,
-            'instanceID' => $instID,
-            'create'     => [
-                'moduleID'       => $guid,
-                'location'       => $this->GetConfiguratorLocation($catID),
-                'info'           => $product_name,
-                'configuration'  => [
-                    'product_type' => $product_type,
-                    'product_id'   => $product_id,
-                ]
-            ]
-        ];
-
-        return $entry;
-    }
-
     private function getConfiguratorValues()
     {
         $entries = [];
@@ -103,6 +70,8 @@ class NetatmoAircareConfig extends IPSModule
             $this->SendDebug(__FUNCTION__, 'has no active parent', 0);
             return $entries;
         }
+
+        $catID = $this->ReadPropertyInteger('ImportCategoryID');
 
         $SendData = ['DataID' => '{076043C4-997E-6AB3-9978-DA212D50A9F5}', 'Function' => 'LastData'];
         $data = $this->SendDataToParent(json_encode($SendData));
@@ -135,8 +104,39 @@ class NetatmoAircareConfig extends IPSModule
                         continue;
                     }
 
-                    $entry = $this->buildEntry($guid, $product_type, $product_id, $product_name, $product_category);
+                    $instIDs = IPS_GetInstanceListByModuleID($guid);
+
+                    $instanceID = 0;
+                    foreach ($instIDs as $instID) {
+                        $prodID = IPS_GetProperty($instID, 'product_id');
+                        if ($prodID == $product_id) {
+                            $instanceID = $instID;
+                            break;
+                        }
+                    }
+
+                    if ($instanceID && IPS_GetInstance($instanceID)['ConnectionID'] != IPS_GetInstance($this->InstanceID)['ConnectionID']) {
+                        continue;
+                    }
+
+                    $entry = [
+                        'instanceID' => $instanceID,
+                        'category'   => $this->Translate($product_category),
+                        'name'       => $product_name,
+                        'product_id' => $product_id,
+                        'create'     => [
+                            'moduleID'       => $guid,
+                            'location'       => $this->GetConfiguratorLocation($catID),
+                            'info'           => $product_name,
+                            'configuration'  => [
+                                'product_type' => $product_type,
+                                'product_id'   => $product_id,
+                            ]
+                        ]
+                    ];
+
                     $entries[] = $entry;
+                    $this->SendDebug(__FUNCTION__, 'entry=' . print_r($entry, true), 0);
                 }
             }
         }
@@ -159,6 +159,10 @@ class NetatmoAircareConfig extends IPSModule
                     }
                 }
                 if ($fnd) {
+                    continue;
+                }
+
+                if (IPS_GetInstance($instID)['ConnectionID'] != IPS_GetInstance($this->InstanceID)['ConnectionID']) {
                     continue;
                 }
 
