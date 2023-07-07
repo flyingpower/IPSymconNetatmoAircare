@@ -600,7 +600,7 @@ class NetatmoAircareIO extends IPSModule
                             'client_secret' => $secret,
                             'username'      => $user,
                             'password'      => $password,
-                            'scope'         => 'read_presence write_presence access_presence read_camera write_camera access_camera read_smokedetector'
+                            'scope'         => 'read_presence write_presence access_presence read_camera write_camera access_camera read_smokedetector read_homecoach'
                         ];
                     } else {
                         $postdata = [
